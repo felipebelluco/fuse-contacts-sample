@@ -1,0 +1,67 @@
+<App Theme="Basic">
+	<Font File="Assets/Fonts/Roboto-Medium.ttf" ux:Global="Medium" />
+    <Font File="Assets/Fonts/Roboto-Light.ttf" ux:Global="Light" />
+	<Font File="Assets/Fonts/Roboto-Regular.ttf" ux:Global="Regular" />
+
+	<!-- Classes -->
+	<Text ux:Class="Title" FontSize="20" Font="Medium"  />
+	<Text ux:Class="Subheading" FontSize="16" Font="Regular" />
+	<Text ux:Class="Body" FontSize="14" Font="Regular" />
+	<Text ux:Class="Caption" FontSize="12" Font="Regular" />
+	<Text ux:Class="ToolbarTitle" FontSize="20" Font="Medium" TextColor="#FFF" Alignment="VerticalCenter" Padding="72,0,0,0" /> 
+	<Rectangle ux:Class="Toolbar" Height="56">
+		<SolidColor Color="#3F51B5" />
+	</Rectangle>
+	<StackPanel ux:Class="ListItem" Padding="16,8,16,8" />
+	
+	<DockPanel>
+		<JavaScript File="ContactsList.js" />
+		<StackPanel Dock="Top" Background="#3CB5D0">
+			<StatusBarBackground/>
+			<iOS.StatusBarConfig Style="Light"/>
+		</StackPanel>
+
+		<Panel>
+			<HierarchicalNavigation ux:Name="MainNavigation" Active="contactsList" />
+
+			<Page ux:Class="ContactsList">
+				<EnteringAnimation>
+		            <Move X="1" RelativeTo="ParentSize" />
+		        </EnteringAnimation>
+		        <ExitingAnimation>
+		            <Move X="-1" RelativeTo="ParentSize" />
+		        </ExitingAnimation>
+			</Page>
+
+			<ContactsList ux:Name="contactsList">
+				<ScrollView>
+					<StackPanel>
+						<Each Items="{users}">
+							<ListItem Clicked="{openItem}">
+								<Title Value="{name}" />
+								<Subheading Value="{email}" />
+								<Clicked>
+									<NavigateTo Target="contactDetail" />
+								</Clicked>
+							</ListItem>
+						</Each>
+					</StackPanel>	
+				</ScrollView>
+			</ContactsList>
+
+			<ContactsList ux:Name="contactDetail" ux:AutoBind="false">
+				<StackPanel>
+					<Select Data="{selectedUser}">
+						<Title Value="{name}" />
+			            <Button Text="Go Back">
+			                <Clicked>
+			                    <GoBack />
+			                </Clicked>
+			            </Button>
+		            </Select>
+				</StackPanel>
+			</ContactsList>
+		</Panel>
+		
+	</DockPanel>
+</App>
